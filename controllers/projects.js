@@ -3,7 +3,7 @@
         app.post("/projects", async(req,res) =>{
             try {
                 const { description } = req.body;
-                const newProject = await pool.query( "INSERT INTO projects (description) VALUES($1)",
+                const newProject = await pool.query( "INSERT INTO projects VALUES($1)",
                 [description]
                 ); 
             } catch (err) {
