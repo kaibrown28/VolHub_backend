@@ -9,8 +9,8 @@ router.get('/', (req, res) => {
 
 router.post("/", async(req,res) =>{
     try {
-        const { firstName, lastName, organization } = req.body;
-        const newAdministrator = await pool.query( "INSERT INTO administrator (firstName, lastName, organization) VALUES($1, $2, $3)",
+        const { firstName, lastName, organization} = req.body;
+        const newProjectLead = await pool.query( "INSERT INTO projectlead (firstName, lastName, organization) VALUES($1, $2, $3)",
         [firstName, lastName, organization]
         ); 
     } catch (err) {
@@ -20,8 +20,8 @@ router.post("/", async(req,res) =>{
 //show all
 router.get("/", async(req,res) =>{
 try {
-    const allAdministrators = await pool.query( "SELECT * FROM administrator");
-    res.json(allAdministrators.rows); 
+    const allProjectLeads = await pool.query( "SELECT * FROM projectlead");
+    res.json(allProjectLeads.rows); 
 } catch (err) {
     console.error(err.message);
 }
@@ -30,8 +30,8 @@ try {
     router.get("/:id", async(req,res) =>{
         try {
             const { id } = req.params;
-            const administrator = await pool.query( "SELECT * FROM administrator WHERE admin_id = $1", [id]);
-            res.json(administrator.rows); 
+            const projectLead = await pool.query( "SELECT * FROM projectlead WHERE projectlead_id = $1", [id]);
+            res.json(projectLead.rows); 
         } catch (err) {
             console.error(err.message);
         }
@@ -41,8 +41,8 @@ try {
         try {
             const { id } = req.params;
             const { firstName, lastName, organization} = req.body;
-            const updateAdministrator = await pool.query( "UPDATE administrator SET firstName = $1, lastName = $2, organization = $3 WHERE projectlead_id = $4", [ firstName, lastName, organization, id]);
-            res.json(updateAdministrator.rows); 
+            const updateProjectLead = await pool.query( "UPDATE projectlead SET firstName = $1, lastName = $2, organization = $3 WHERE projectlead_id = $4", [ firstName, lastName, organization, id]);
+            res.json(updateProjectLead.rows); 
         } catch (err) {
             console.error(err.message);
         }
@@ -51,8 +51,8 @@ try {
     router.delete("/:id", async(req,res) =>{
         try {
             const { id } = req.params;
-            const deleteAdministrator= await pool.query( "DELETE FROM administrator WHERE admin_id = $1", [id]);
-            res.json("The administrator was deleted."); 
+            const deleteProjectLead = await pool.query( "DELETE FROM projectlead WHERE projectlead_id = $1", [id]);
+            res.json("The projectlead was deleted."); 
         } catch (err) {
             console.error(err.message);
         }
