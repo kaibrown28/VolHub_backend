@@ -10,7 +10,7 @@ const volunteerController = require('./controllers/volunteer.js')
 const projectLeadController = require('./controllers/projectLead.js')
 
 
-const PORT = process.env.PORT || 3004;
+const PORT = process.env.PORT || 3000;
 
 //Middleware
 app.use(cors())
