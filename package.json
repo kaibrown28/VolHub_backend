@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "16.14.2",
+    "npm": "8.5.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -23,8 +27,5 @@
     "mongoose": "^6.4.1",
     "nodemon": "^2.0.18",
     "pg": "^8.7.3"
-  },
-  "engines": {
-    "node": "16.14.2"
   }
 }
