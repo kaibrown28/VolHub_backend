@@ -4,13 +4,13 @@ const router = express.Router();
 //routes
 
 router.get('/', (req, res) => {
-    res.json(res.body)
+    res.json(req.body)
   })
 
 router.post("/", async(req,res) =>{
     try {
         const { firstName, lastName, interests, skills } = req.body;
-        const newVolunteer = await pool.query( "INSERT INTO volunters (firstName, lastName, interests, skills) VALUES($1, $2, $3, $4)",
+        const newVolunteer = await pool.query( "INSERT INTO volunteers (firstName, lastName, interests, skills) VALUES($1, $2, $3, $4)",
         [firstName, lastName, interests, skills]
         ); 
     } catch (err) {
@@ -20,8 +20,8 @@ router.post("/", async(req,res) =>{
 //show all
 router.get("/", async(req,res) =>{
 try {
-    const allVolunteers = await pool.query( "SELECT * FROM volunters");
-    res.json(allVolunters.rows); 
+    const allVolunteers = await pool.query( "SELECT * FROM volunteers");
+    res.json(allVolunteers.rows); 
 } catch (err) {
     console.error(err.message);
 }
@@ -30,8 +30,8 @@ try {
     router.get("/:id", async(req,res) =>{
         try {
             const { id } = req.params;
-            const Volunter = await pool.query( "SELECT * FROM volunters WHERE volunter_id = $1", [id]);
-            res.json(Volunter.rows); 
+            const Volunteer = await pool.query( "SELECT * FROM volunteers WHERE volunter_id = $1", [id]);
+            res.json(Volunteer.rows); 
         } catch (err) {
             console.error(err.message);
         }
@@ -41,8 +41,8 @@ try {
         try {
             const { id } = req.params;
             const { firstName, lastName, interests, skills } = req.body;
-            const updateVolunter = await pool.query( "UPDATE volunters SET firstName = $1, lastName = $2, interests = $3, skills = $4 WHERE volunteer_id = $5", [ firstName, lastName, interests, skills, id]);
-            res.json(updateVolunter.rows); 
+            const updateVolunteer = await pool.query( "UPDATE volunteers SET firstName = $1, lastName = $2, interests = $3, skills = $4 WHERE volunteer_id = $5", [ firstName, lastName, interests, skills, id]);
+            res.json(updateVolunteer.rows); 
         } catch (err) {
             console.error(err.message);
         }
@@ -51,8 +51,8 @@ try {
     router.delete("/:id", async(req,res) =>{
         try {
             const { id } = req.params;
-            const deleteVolunter = await pool.query( "DELETE FROM volunters WHERE volunter_id = $1", [id]);
-            res.json("This Volunter was deleted."); 
+            const deleteVolunteer = await pool.query( "DELETE FROM volunteers WHERE volunteer_id = $1", [id]);
+            res.json("This Volunteer was deleted."); 
         } catch (err) {
             console.error(err.message);
         }
