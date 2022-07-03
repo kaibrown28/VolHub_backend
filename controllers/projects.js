@@ -16,10 +16,6 @@ router.post("/", async(req,res) =>{
     }
 })
 
-router.get('/', (req, res) => {
-    res.redirect('/projects')
-  })
-
 //show all
 router.get("/projects", async(req,res) =>{
 try {
