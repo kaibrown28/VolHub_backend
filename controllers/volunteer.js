@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
     res.json(req.body)
   })
 
-router.post("/", async(req,res) =>{
+router.post("/volunteers", async(req,res) =>{
     try {
         const { firstName, lastName, interests, skills } = req.body;
         const newVolunteer = await pool.query( "INSERT INTO volunteers (firstName, lastName, interests, skills) VALUES($1, $2, $3, $4)",
@@ -18,7 +18,7 @@ router.post("/", async(req,res) =>{
     }
 })
 //show all
-router.get("/", async(req,res) =>{
+router.get("/volunteers", async(req,res) =>{
 try {
     const allVolunteers = await pool.query( "SELECT * FROM volunteers");
     res.json(allVolunteers.rows); 
@@ -27,7 +27,7 @@ try {
 }
 })
     //show one
-    router.get("/:id", async(req,res) =>{
+    router.get("/volunteers/:id", async(req,res) =>{
         try {
             const { id } = req.params;
             const Volunteer = await pool.query( "SELECT * FROM volunteers WHERE volunter_id = $1", [id]);
@@ -37,7 +37,7 @@ try {
         }
         })
     //update
-    router.put("/:id", async(req,res) =>{
+    router.put("/volunteers/:id", async(req,res) =>{
         try {
             const { id } = req.params;
             const { firstName, lastName, interests, skills } = req.body;
@@ -48,7 +48,7 @@ try {
         }
         })
     //delete
-    router.delete("/:id", async(req,res) =>{
+    router.delete("/volunteers/:id", async(req,res) =>{
         try {
             const { id } = req.params;
             const deleteVolunteer = await pool.query( "DELETE FROM volunteers WHERE volunteer_id = $1", [id]);
