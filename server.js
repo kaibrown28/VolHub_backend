@@ -26,9 +26,5 @@ app.listen(PORT, () => {
     console.log(`I'm listening on port ${PORT}.`)
 })
 
-//routes
 
-app.get('/', (req, res) => {
-    res.json({ info: 'Node.js, Express, and Postgres API' })
-  })
 
