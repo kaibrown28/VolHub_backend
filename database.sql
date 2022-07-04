@@ -45,7 +45,7 @@ CREATE TABLE projectlead(
     organization VARCHAR(50)
 );
 --project lead seed data
-INSERT INTO projectlead(firstName ,lastName, organization)
+INSERT INTO projectlead(firstName,lastName, organization)
 VALUES('Max', 'Goofy', 'Entertainment Agency');
 
 --administrator table
@@ -57,5 +57,5 @@ CREATE TABLE administrator(
 );
 
 --administrator seed data
-INSERT INTO administrator(firstName ,lastName, organization)
+INSERT INTO administrator(firstName,lastName, organization)
 VALUES('Yuna', 'Lesca', 'VolHub inc.');
