@@ -32,6 +32,12 @@ app.post('/projects', db.createProject)
 app.put('/projects/:id', db.updateProject)
 app.delete('/projects/:id', db.deleteProject)
 
+app.get('/volunteers', db.getVolunteers)
+app.get('/volunteers/:id', db.getVolunteerByID)
+app.post('/volunteers', db.createVolunteer)
+app.put('/volunteers/:id', db.updateVolunteer)
+app.delete('/volunteers/:id', db.deleteVolunteer)
+
 
 //.listeners
 app.listen(PORT, () => {

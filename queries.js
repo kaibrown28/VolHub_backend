@@ -72,11 +72,75 @@ const deleteProject = (request, response) => {
     })
   }
 
-  module.exports = {
+ 
+
+
+  //routes
+
+
+  const createVolunteer = (request, response) => {
+        const { firstname, lastname, interests, skills } = request.body;
+        pool.query( 'INSERT INTO volunteers (firstName, lastName, interests, skills) VALUES($1, $2, $3, $4) RETURNING * ',
+        [firstname, lastname, interests, skills], (err, results) => {
+            if (err){
+                throw(err)
+            }response.status(201).send(`User added with ID: ${results.rows[0].id}`)
+        }
+        ); 
+    } 
+//show all
+const getVolunteers = (request, response) => {
+    pool.query('SELECT * FROM volunteers ORDER BY volunteer_id ASC', (error, results) => {
+        if (error) {
+        throw error
+        }
+        response.status(200).json(results.rows)
+    })
+    }
+    //show one
+    const getVolunteerByID= (request, response) => {
+        const id = parseInt(request.params.id)
+      
+        pool.query('SELECT * FROM volunteers WHERE volunteer_id = $1', [id], (error, results) => {
+          if (error) {
+            throw error
+          }
+          response.status(200).json(results.rows)
+        })
+      }
+    
+    //update
+    const updateVolunteer = (request, response) => {
+            const  id  = parseInt(request.params.id);
+            const { firstname, lastname, interests, skills } = request.body;
+            pool.query( "UPDATE volunteers SET firstName = $1, lastName = $2, interests = $3, skills = $4 WHERE volunteer_id = $5", [ firstname, lastname, interests, skills, id],
+            (error, result) => {
+                if (error) {
+                  throw error
+                }
+                response.status(200).send(`User modified with ID: ${id}`)
+              }
+            )
+          }
+    //delete
+    const deleteVolunteer = (request, response) => {
+            const  id  = parseInt(request.params.id);
+            pool.query( "DELETE FROM volunteers WHERE volunteer_id = $1", [id], (error, results) => {
+                if (error) {
+                  throw error
+                }
+                response.status(200).send(`User deleted with ID: ${id}`)
+              })
+            }
+module.exports = {
     getProjects,
     getProjectById,
     createProject,
     updateProject,
     deleteProject,
+    getVolunteers,
+    getVolunteerByID,
+    createVolunteer,
+    updateVolunteer,
+    deleteVolunteer,
   }
-
