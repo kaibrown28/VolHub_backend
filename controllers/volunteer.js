@@ -33,7 +33,6 @@ const createVolunteer = (request, response) => {
         if (err){
             throw(err)
         }response.status(201).send(`User added with ID: ${results.rows[0].id}`)
-
     }
     ); 
 } 
