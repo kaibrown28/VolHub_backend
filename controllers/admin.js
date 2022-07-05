@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://volhub-backend.herokuapp.com"
+    : "localhost:5000";
 //routes
 
-router.get('/', (req, res) => {
+router.get('/admin', (req, res) => {
     res.json(res.body)
   })
 
-router.post("/", async(req,res) =>{
+router.post("/admin", async(req,res) =>{
     try {
         const { firstName, lastName, organization } = req.body;
         const newAdministrator = await pool.query( "INSERT INTO administrator (firstName, lastName, organization) VALUES($1, $2, $3)",
@@ -18,7 +22,7 @@ router.post("/", async(req,res) =>{
     }
 })
 //show all
-router.get("/", async(req,res) =>{
+router.get("/admin", async(req,res) =>{
 try {
     const allAdministrators = await pool.query( "SELECT * FROM administrator");
     res.json(allAdministrators.rows); 
@@ -27,7 +31,7 @@ try {
 }
 })
     //show one
-    router.get("/:id", async(req,res) =>{
+    router.get("/admin/:id", async(req,res) =>{
         try {
             const { id } = req.params;
             const administrator = await pool.query( "SELECT * FROM administrator WHERE admin_id = $1", [id]);
@@ -37,7 +41,7 @@ try {
         }
         })
     //update
-    router.put("/:id", async(req,res) =>{
+    router.put("/admin/:id", async(req,res) =>{
         try {
             const { id } = req.params;
             const { firstName, lastName, organization} = req.body;
@@ -48,7 +52,7 @@ try {
         }
         })
     //delete
-    router.delete("/:id", async(req,res) =>{
+    router.delete("/admin/:id", async(req,res) =>{
         try {
             const { id } = req.params;
             const deleteAdministrator= await pool.query( "DELETE FROM administrator WHERE admin_id = $1", [id]);
