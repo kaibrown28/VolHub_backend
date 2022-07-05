@@ -1,5 +1,5 @@
 -- create the database
-CREATE DATABASE volunteerhub;
+CREATE DATABASE volunteerhub_db;
 
 -- projects table
 CREATE TABLE projects(
