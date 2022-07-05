@@ -16,6 +16,16 @@ module.exports = pool
 
 
 
+router.post("/volunteers", async(req,res) =>{
+    try {
+        const { firstName, lastName, interests, skills } = req.body;
+        const newVolunteer = await pool.query( "INSERT INTO volunteers (firstName, lastName, interests, skills) VALUES($1, $2, $3, $4)",
+        [firstName, lastName, interests, skills]
+        ); 
+    } catch (err) {
+        console.error(err.message);
+
+
 const createVolunteer = (request, response) => {
     const { firstName, lastName, interests, skills } = req.body;
     pool.query( "INSERT INTO volunteers (firstName, lastName, interests, skills) VALUES($1, $2, $3, $4)",
@@ -23,6 +33,7 @@ const createVolunteer = (request, response) => {
         if (err){
             throw(err)
         }response.status(201).send(`User added with ID: ${results.rows[0].id}`)
+
     }
     ); 
 } 
