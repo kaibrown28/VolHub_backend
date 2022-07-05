@@ -10,7 +10,10 @@ const pool = new Pool ({
 
 module.exports = pool
 
+<<<<<<< HEAD
 //------------PROJECTS----------------//
+=======
+>>>>>>> 5f6821b (fixed local project routes)
 const createProject = (request, response) => {
     const {description, projectlead, organization} = request.body
   
@@ -73,6 +76,7 @@ const deleteProject = (request, response) => {
     })
   }
 
+<<<<<<< HEAD
  
 
 //--------------VOLUNTEERS----------------//
@@ -247,11 +251,15 @@ const deleteAdmin = (request, response) => {
 
 
 module.exports = {
+=======
+  module.exports = {
+>>>>>>> 5f6821b (fixed local project routes)
     getProjects,
     getProjectById,
     createProject,
     updateProject,
     deleteProject,
+<<<<<<< HEAD
     getVolunteers,
     getVolunteerByID,
     createVolunteer,
@@ -268,3 +276,7 @@ module.exports = {
     updateAdmin,
     deleteAdmin,
   }
+=======
+  }
+
+>>>>>>> 5f6821b (fixed local project routes)
