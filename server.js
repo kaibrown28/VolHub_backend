@@ -44,6 +44,12 @@ app.post('/projectlead', db.createProjectLead)
 app.put('/projectlead/:id', db.updateProjectLead)
 app.delete('/projectlead/:id', db.deleteProjectLead)
 
+app.get('/admin', db.getAdmin)
+app.get('/admin/:id', db.getAdminByID)
+app.post('/admin', db.createAdmin)
+app.put('/admin/:id', db.updateAdmin)
+app.delete('/admin/:id', db.deleteAdmin)
+
 
 //.listeners
 app.listen(PORT, () => {

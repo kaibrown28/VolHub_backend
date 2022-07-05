@@ -187,6 +187,61 @@ const deleteProjectLead = (request, response) => {
             })
         }
 
+//------------ADMIN----------------//
+const createAdmin = (request, response) => {
+    const { firstname, lastname, organization } = request.body;
+    pool.query( "INSERT INTO administrator (firstname, lastname, organization) VALUES($1, $2, $3) RETURNING *",
+    [firstname, lastname, organization], (error, results) => {
+        if (error){
+            throw(error)
+        }response.status(201).send(`User added with ID: ${results.rows[0].id}`)
+    }
+    ); 
+} 
+//show all
+const getAdmin = (request, response) => {
+pool.query('SELECT * FROM administrator ORDER BY admin_id ASC', (error, results) => {
+    if (error) {
+    throw error
+    }
+    response.status(200).json(results.rows)
+})
+}
+//show one
+const getAdminByID = (request, response) => {
+    const id = parseInt(request.params.id)
+    
+    pool.query('SELECT * FROM administrator WHERE admin_id = $1', [id], (error, results) => {
+        if (error) {
+        throw error
+        }
+        response.status(200).json(results.rows)
+    })
+    }
+
+//update
+const updateAdmin= (request, response) => {
+        const  id  = parseInt(request.params.id);
+        const { firstname, lastname, organization } = request.body;
+        pool.query( "UPDATE administrator SET firstname = $1, lastname = $2, organization= $3 WHERE admin_id = $4", [ firstname, lastname, organization, id],
+        (error, result) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).send(`User modified with ID: ${id}`)
+            }
+        )
+        }
+//delete
+const deleteAdmin = (request, response) => {
+        const  id  = parseInt(request.params.id);
+        pool.query( "DELETE FROM administrator WHERE admin_id = $1", [id], (error, results) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).send(`User deleted with ID: ${id}`)
+            })
+        }
 
 
 
@@ -207,4 +262,9 @@ module.exports = {
     createProjectLead,
     updateProjectLead,
     deleteProjectLead,
+    getAdmin,
+    getAdminByID,
+    createAdmin,
+    updateAdmin,
+    deleteAdmin,
   }
