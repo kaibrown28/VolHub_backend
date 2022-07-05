@@ -1,60 +1,87 @@
-const express = require('express');
-const router = express.Router();
+const db = require ("../queries")
 
+const express = require("express")    
+const router = express.Router()
+
+const pool = new Pool ({
+user: "voladmin",
+password: "volpassword" ,
+host: "localhost",
+port: 5432,
+database: "ProjectLeadhub_db"
+})
+
+module.exports = pool
 //routes
 
-router.get('/', (req, res) => {
-    res.json("This is the project lead index page")
-  })
 
-router.post("/", async(req,res) =>{
-    try {
-        const { firstName, lastName, organization} = req.body;
-        const newProjectLead = await pool.query( "INSERT INTO projectlead (firstName, lastName, organization) VALUES($1, $2, $3)",
-        [firstName, lastName, organization]
-        ); 
-    } catch (err) {
-        console.error(err.message);
+
+const createProjectLead = (request, response) => {
+    const { firstname, lastname, organization } = req.body;
+    pool.query( "INSERT INTO projectlead (firstname, lastname, organization) VALUES($1, $2, $3",
+    [firstname, lastname, organization], (err, results) => {
+        if (err){
+            throw(err)
+        }response.status(201).send(`User added with ID: ${results.rows[0].id}`)
     }
-})
+    ); 
+} 
 //show all
-router.get("/", async(req,res) =>{
-try {
-    const allProjectLeads = await pool.query( "SELECT * FROM projectlead");
-    res.json(allProjectLeads.rows); 
-} catch (err) {
-    console.error(err.message);
-}
+const getprojectlead = (request, response) => {
+pool.query('SELECT * FROM projectlead ORDER BY id ASC', (error, results) => {
+    if (error) {
+    throw error
+    }
+    response.status(200).json(results.rows)
 })
-    //show one
-    router.get("/:id", async(req,res) =>{
-        try {
-            const { id } = req.params;
-            const projectLead = await pool.query( "SELECT * FROM projectlead WHERE projectlead_id = $1", [id]);
-            res.json(projectLead.rows); 
-        } catch (err) {
-            console.error(err.message);
+}
+//show one
+const getProjectLeadByID = (request, response) => {
+    const id = parseInt(request.params.id)
+    
+    pool.query('SELECT * FROM projectlead WHERE projectlead_id = $1', [id], (error, results) => {
+        if (error) {
+        throw error
         }
-        })
-    //update
-    router.put("/:id", async(req,res) =>{
-        try {
-            const { id } = req.params;
-            const { firstName, lastName, organization} = req.body;
-            const updateProjectLead = await pool.query( "UPDATE projectlead SET firstName = $1, lastName = $2, organization = $3 WHERE projectlead_id = $4", [ firstName, lastName, organization, id]);
-            res.json(updateProjectLead.rows); 
-        } catch (err) {
-            console.error(err.message);
+        response.status(200).json(results.rows)
+    })
+    }
+
+//update
+const updateProjectLead = (request, response) => {
+        const  id  = parseInt(req.params.id);
+        const { firstname, lastname, organization } = req.body;
+        pool.query( "UPDATE projectlead SET firstname = $1, lastname = $2, organization= $3 WHERE projectlead_id = $4", [ firstname, lastname, organization, id],
+        (error, result) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).send(`User modified with ID: ${id}`)
+            }
+        )
         }
-        })
-    //delete
-    router.delete("/:id", async(req,res) =>{
-        try {
-            const { id } = req.params;
-            const deleteProjectLead = await pool.query( "DELETE FROM projectlead WHERE projectlead_id = $1", [id]);
-            res.json("The projectlead was deleted."); 
-        } catch (err) {
-            console.error(err.message);
+//delete
+const deleteProjectLead = (request, response) => {
+        const  id  = parseInt(req.params.id);
+        pool.query( "DELETE FROM projectlead WHERE projectlead_id = $1", [id], (error, results) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).send(`User deleted with ID: ${id}`)
+            })
         }
-        })
-        module.exports = router;
+module.exports ={
+    getProjectlead,
+    getProjectLeadByID,
+    createProjectLead,
+    updateProjectLead,
+    deleteProjectLead,
+    }
+
+router.get('/projectlead', db.getprojectlead)
+router.get('/projectlead/:id', db.getProjectLeadByID)
+router.post('/projectlead', db.createProjectLead)
+router.put('/projectlead/:id', db.updateProjectLead)
+router.delete('/projectlead/:id', db.deleteProjectLead)
+
+module.exports = router;

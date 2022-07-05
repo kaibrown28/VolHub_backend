@@ -10,6 +10,7 @@ const pool = new Pool ({
 
 module.exports = pool
 
+//------------PROJECTS----------------//
 const createProject = (request, response) => {
     const {description, projectlead, organization} = request.body
   
@@ -74,10 +75,7 @@ const deleteProject = (request, response) => {
 
  
 
-
-  //routes
-
-
+//--------------VOLUNTEERS----------------//
   const createVolunteer = (request, response) => {
         const { firstname, lastname, interests, skills } = request.body;
         pool.query( 'INSERT INTO volunteers (firstName, lastName, interests, skills) VALUES($1, $2, $3, $4) RETURNING * ',
@@ -132,6 +130,67 @@ const getVolunteers = (request, response) => {
                 response.status(200).send(`User deleted with ID: ${id}`)
               })
             }
+
+//------------PROJECT LEADS----------------//
+const createProjectLead = (request, response) => {
+    const { firstname, lastname, organization } = request.body;
+    pool.query( "INSERT INTO projectlead (firstname, lastname, organization) VALUES($1, $2, $3) RETURNING *",
+    [firstname, lastname, organization], (error, results) => {
+        if (error){
+            throw(error)
+        }response.status(201).send(`User added with ID: ${results.rows[0].id}`)
+    }
+    ); 
+} 
+//show all
+const getProjectLead = (request, response) => {
+pool.query('SELECT * FROM projectlead ORDER BY projectlead_id ASC', (error, results) => {
+    if (error) {
+    throw error
+    }
+    response.status(200).json(results.rows)
+})
+}
+//show one
+const getProjectLeadByID = (request, response) => {
+    const id = parseInt(request.params.id)
+    
+    pool.query('SELECT * FROM projectlead WHERE projectlead_id = $1', [id], (error, results) => {
+        if (error) {
+        throw error
+        }
+        response.status(200).json(results.rows)
+    })
+    }
+
+//update
+const updateProjectLead = (request, response) => {
+        const  id  = parseInt(request.params.id);
+        const { firstname, lastname, organization } = request.body;
+        pool.query( "UPDATE projectlead SET firstname = $1, lastname = $2, organization= $3 WHERE projectlead_id = $4", [ firstname, lastname, organization, id],
+        (error, result) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).send(`User modified with ID: ${id}`)
+            }
+        )
+        }
+//delete
+const deleteProjectLead = (request, response) => {
+        const  id  = parseInt(request.params.id);
+        pool.query( "DELETE FROM projectlead WHERE projectlead_id = $1", [id], (error, results) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).send(`User deleted with ID: ${id}`)
+            })
+        }
+
+
+
+
+
 module.exports = {
     getProjects,
     getProjectById,
@@ -143,4 +202,9 @@ module.exports = {
     createVolunteer,
     updateVolunteer,
     deleteVolunteer,
+    getProjectLead,
+    getProjectLeadByID,
+    createProjectLead,
+    updateProjectLead,
+    deleteProjectLead,
   }
