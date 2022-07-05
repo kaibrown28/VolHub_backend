@@ -4,7 +4,7 @@ const router = express.Router();
 //routes
 
 router.get('/', (req, res) => {
-    res.json(res.body)
+    res.json("This is the project lead index page")
   })
 
 router.post("/", async(req,res) =>{
